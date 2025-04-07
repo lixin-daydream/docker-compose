@@ -1,0 +1,35 @@
+#集群名称
+cluster.name: elasticsearch-cluster
+ 
+#节点名称
+node.name: masternode
+ 
+#设置绑定的ip地址，可以使ipv4或者ipv6 绑定这台机器的任何一个ip
+network.bind_host: 0.0.0.0
+ 
+#设置其他节点和该节点交互的ip地址，如果不设置它会自动判断，值必须是个真实的ip地址
+network.publish_host: 0.0.0.0
+ 
+#设置对外服务的http端口，默认为9200
+http.port: 9200
+#设置节点之间的tcp端口，默认是9300（ElasticSearch8新配置）
+transport.profiles.default.port: 9300
+ 
+#开发环境，暂时关闭x-pack安全控制配置
+xpack.security.enabled: false
+ 
+#是否允许跨域REST请求
+http.cors.enabled: true
+#允许REST请求来自何处
+http.cors.allow-origin: "*"
+ 
+#初始master节点
+cluster.initial_master_nodes: ['masternode']
+ 
+#节点角色设置（ElasticSearch8新配置）
+node.roles: [master]
+ 
+ 
+#*****************下面elasticsearch8中不能设置！！！**********************
+#集群中一直正常运行的，有成为master节点资格的最少节点数，默认为1
+#discovery.zen.minimum_master_nodes: 1

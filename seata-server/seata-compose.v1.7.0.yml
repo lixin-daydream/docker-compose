@@ -1,0 +1,24 @@
+services:
+  seata-server:
+    image: seataio/seata-server:1.7.0
+    container_name: seata   #启动后容器名
+    ports:
+      - "7091:7091"
+      - "8091:8091"
+    environment:
+      - STORE_MODE=db
+      # 以SEATA_IP作为host注册seata server
+      - SEATA_IP=seata
+      - SEATA_PORT=8091
+    restart: unless-stopped
+    volumes:
+      # 假设我们通过docker cp命令把资源文件拷贝到相对路径`./seata-server/resources`中
+      # 如有问题，请阅读上面的[注意事项]以及[使用自定义配置文件]
+      - "./resources:/seata-server/resources"
+      - "./logs:/root/logs"
+    networks:
+      - dockernetwork
+networks:
+  dockernetwork:
+    driver: bridge
+    external: true

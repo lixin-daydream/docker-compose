@@ -1,0 +1,15 @@
+services:
+  elasticsearch-head:
+    image: wallbase/elasticsearch-head:6-alpine
+    container_name: elasticsearch-head
+    restart: always
+    ports:
+      - '9100:9100'
+    networks:
+      - dockernetwork  
+      
+
+networks:
+  dockernetwork:
+    driver: bridge
+    external: true

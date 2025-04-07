@@ -1,0 +1,8 @@
+services:
+  centos:
+    image: centos:latest
+    container_name: centos_container
+    command: tail -f /dev/null
+    stdin_open: true
+    tty: true
+

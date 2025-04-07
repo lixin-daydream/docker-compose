@@ -1,0 +1,27 @@
+services:
+  master:
+    image: "docker.io/redis:latest"            #docker镜像位置
+    restart: always                            #docker启动后自启动
+    container_name: "redis"             #容器名称
+    volumes:
+      - "./redis-master.conf:/etc/redis.conf"  #挂载redis配置文件
+      - "./sentinel-master.conf:/etc/sentinel.conf"   
+      - "./data-master:/data"                  #挂载数据文件
+      - "./log-master:/var/log"                #日志映射
+    ports:
+      - "6379:6379"
+      - "26379:26379"
+    privileged: true
+    command:                                   #多条命令启动启动s
+        - sh
+        - -c 
+        - |
+          redis-server /etc/redis.conf &
+          redis-sentinel /etc/sentinel.conf
+    networks:
+      - dockernetwork  
+
+networks:
+  dockernetwork:
+    driver: bridge
+    external: true

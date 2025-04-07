@@ -1,0 +1,46 @@
+version: "3.1"
+services:
+  elasticsearch7-1: 
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.6.2
+    restart: always
+    container_name: elasticsearch
+    environment: 
+      # - node.name=es01 # 节点名称
+      # - discovery.seed_hosts=elasticsearch1 # 发现机制
+      # - cluster.initial_master_nodes=es01 # 集群发现顺序
+      # - cluster.name=docker-cluster # 集群名称
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m" # 运行内存, 感觉没有生效
+#      - node.name=es01
+#      - node.master=true
+#      - node.data=true
+#      - discovery.seed_hosts=es02
+#      - cluster.initial_master_nodes=es01,es02
+#      - cluster.name=docker-cluster
+#      - bootstrap.memory_lock=true
+#      - http.port=9200
+#      - transport.tcp.port=9300
+#      - cluster.remote.connect=false
+#      - xpack.security.enabled=true
+#      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ulimits: 
+      memlock: 
+        soft: -1
+        hard: -1
+    ports:
+        # 端口映射
+      - 9200:9200
+      - 9300:9300
+    networks:
+        # 网段名称, 需要相互关联的容器必须处于同一个network中
+      - somenetwork
+
+    volumes: 
+      - ./data:/usr/share/elasticsearch/data
+      - ./plugins:/usr/share/elasticsearch/plugins
+      - ./logs:/usr/share/elasticsearch/logs
+      - ./conf/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+
+networks:
+  somenetwork:
+    driver: bridge

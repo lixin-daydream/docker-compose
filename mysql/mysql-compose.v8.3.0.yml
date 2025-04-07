@@ -1,0 +1,25 @@
+services:
+  db:
+    environment:                               #mysql 初始化配置 配置文件 ls -a .env
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    image: "docker.io/mysql:8.3.0"            #docker镜像位置
+    networks:
+        # 网段名称, 需要相互关联的容器必须处于同一个network中
+      - dockernetwork
+    container_name: "mysql"                 #容器名称
+    restart: unless-stopped
+    volumes:
+      - "./db:/var/lib/mysql"                  #挂载数据目录
+      - "./conf:/etc/mysql/conf.d"             #挂载配置文件目录
+      - "./init:/docker-entrypoint-initdb.d/"  #执行初始化sql文件
+      - "./logs:/usr/local/mysql/log"                         #日志映射
+    ports:
+      - "3306:3306"
+
+networks:
+  dockernetwork:
+    driver: bridge
+    external: true

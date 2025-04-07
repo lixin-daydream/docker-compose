@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  connector:
+    container_name: network-conversion
+    image: wenjunxiao/mac-docker-connector
+    network_mode: "host"
+    cap_add:
+      - NET_ADMIN
+    privileged: true
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
